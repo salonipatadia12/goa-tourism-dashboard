@@ -1,26 +1,454 @@
 @import "tailwindcss";
 
+/* ============================================
+   SENTINEL — Goa International Tourist Recovery AI
+   Design System: Bloomberg Terminal × Government Intelligence
+   ============================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ─── Backgrounds ─── */
+  --bg-primary: #06080d;
+  --bg-surface: #0c1017;
+  --bg-surface-alt: #111722;
+  --border-default: #1a2233;
+  --border-active: #1e3a5f;
+
+  /* ─── Text ─── */
+  --text-primary: #e8ecf4;
+  --text-muted: #6b7a94;
+  --text-dim: #3d4d65;
+
+  /* ─── Accent System ─── */
+  --cyan: #00d4ff;
+  --cyan-dim: rgba(0, 212, 255, 0.12);
+  --cyan-glow: rgba(0, 212, 255, 0.3);
+  --amber: #ffb800;
+  --amber-dim: rgba(255, 184, 0, 0.12);
+  --emerald: #00ff88;
+  --emerald-dim: rgba(0, 255, 136, 0.12);
+  --crimson: #ff3366;
+  --crimson-dim: rgba(255, 51, 102, 0.12);
+  --purple: #a855f7;
+  --purple-dim: rgba(168, 85, 247, 0.12);
+
+  /* ─── Fonts ─── */
+  --font-display: 'Outfit', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg-primary);
+  --color-foreground: var(--text-primary);
+  --font-sans: var(--font-display);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================
+   RESET & BASE
+   ============================================ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100%;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ============================================
+   GRID BACKGROUND + SCANLINE
+   ============================================ */
+
+.sentinel-grid-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(26, 34, 51, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(26, 34, 51, 0.15) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.sentinel-scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 1;
+  background: linear-gradient(90deg, transparent, var(--cyan-glow), transparent);
+  opacity: 0.25;
+  animation: scanline 4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes scanline {
+  0% { top: 0; }
+  100% { top: 100vh; }
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+/* ============================================
+   PANEL (card container)
+   ============================================ */
+
+.panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  padding: 20px;
+  contain: layout style paint;
+}
+
+.panel-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ============================================
+   DATA TABLE
+   ============================================ */
+
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 4px;
+}
+
+.data-table thead th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  padding: 0 12px 8px;
+  text-align: left;
+  background: none;
+}
+
+.data-table tbody td {
+  background: var(--bg-surface-alt);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-primary);
+  padding: 10px 12px;
+  transition: background 150ms ease;
+}
+
+.data-table tbody td:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.data-table tbody td:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+.data-table tbody tr:hover td {
+  background: var(--border-default);
+}
+
+/* Row entrance animation */
+.data-table tbody tr {
+  animation: fadeInRow 0.3s ease both;
+}
+
+.data-table tbody tr:nth-child(1) { animation-delay: 0ms; }
+.data-table tbody tr:nth-child(2) { animation-delay: 50ms; }
+.data-table tbody tr:nth-child(3) { animation-delay: 100ms; }
+.data-table tbody tr:nth-child(4) { animation-delay: 150ms; }
+.data-table tbody tr:nth-child(5) { animation-delay: 200ms; }
+.data-table tbody tr:nth-child(6) { animation-delay: 250ms; }
+.data-table tbody tr:nth-child(7) { animation-delay: 300ms; }
+.data-table tbody tr:nth-child(8) { animation-delay: 350ms; }
+
+@keyframes fadeInRow {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   KPI CARD
+   ============================================ */
+
+.kpi-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+
+.kpi-card:hover {
+  border-color: var(--border-active);
+  transform: translateY(-1px);
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+}
+
+.kpi-card[data-accent="cyan"]::before {
+  background: linear-gradient(to right, var(--cyan), transparent);
+}
+.kpi-card[data-accent="purple"]::before {
+  background: linear-gradient(to right, var(--purple), transparent);
+}
+.kpi-card[data-accent="emerald"]::before {
+  background: linear-gradient(to right, var(--emerald), transparent);
+}
+.kpi-card[data-accent="amber"]::before {
+  background: linear-gradient(to right, var(--amber), transparent);
+}
+.kpi-card[data-accent="crimson"]::before {
+  background: linear-gradient(to right, var(--crimson), transparent);
+}
+
+/* ============================================
+   PROGRESS BAR
+   ============================================ */
+
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--border-default);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+
+/* ============================================
+   ALERT BOX
+   ============================================ */
+
+.alert-box {
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border-default);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+}
+
+.alert-box-amber {
+  border-left: 3px solid var(--amber);
+}
+
+.alert-box-crimson {
+  border-left: 3px solid var(--crimson);
+}
+
+.alert-box-cyan {
+  border-left: 3px solid var(--cyan);
+}
+
+.alert-box-emerald {
+  border-left: 3px solid var(--emerald);
+}
+
+/* ============================================
+   PRIORITY BADGES
+   ============================================ */
+
+.badge-critical {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: var(--crimson);
+  background: var(--crimson-dim);
+}
+
+.badge-high {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: var(--amber);
+  background: var(--amber-dim);
+}
+
+.badge-medium {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: var(--cyan);
+  background: var(--cyan-dim);
+}
+
+/* ============================================
+   SECTION BADGES
+   ============================================ */
+
+.section-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ============================================
+   ANIMATIONS — Pure CSS
+   ============================================ */
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes freshness-deplete {
+  0% { width: 100%; background: var(--emerald); }
+  70% { background: var(--amber); }
+  100% { width: 0%; background: var(--crimson); }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease both;
+}
+
+/* Staggered card entrance */
+.stagger-1 { animation: fadeIn 0.4s ease 0ms both; }
+.stagger-2 { animation: fadeIn 0.4s ease 80ms both; }
+.stagger-3 { animation: fadeIn 0.4s ease 160ms both; }
+.stagger-4 { animation: fadeIn 0.4s ease 240ms both; }
+.stagger-5 { animation: fadeIn 0.4s ease 320ms both; }
+
+/* ============================================
+   CUSTOM TOOLTIP (Recharts)
+   ============================================ */
+
+.chart-tooltip {
+  background: rgba(12, 16, 23, 0.94);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: 10px 14px;
+  box-shadow: 0 8px 32px var(--bg-primary);
+}
+
+.chart-tooltip-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.chart-tooltip-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* ============================================
+   DATA FRESHNESS BAR
+   ============================================ */
+
+.freshness-bar {
+  width: 60px;
+  height: 4px;
+  background: var(--border-default);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.freshness-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  animation: freshness-deplete 15s linear infinite;
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .sentinel-scanline { display: none; }
+}
+
+*:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+button, a, [role="button"], [tabindex="0"] {
+  cursor: pointer;
 }
