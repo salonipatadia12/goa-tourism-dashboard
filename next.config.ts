@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: "export",
+  basePath: "/goa-tourism-dashboard",
+  images: {
+    unoptimized: true,
+  },
   reactCompiler: true,
 };
 
